@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { logger } from "../utils/logger";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "../generated/client";
 
 export function errorHandler(
   err: Error,
