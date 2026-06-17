@@ -1,11 +1,9 @@
-// Schema SQLite pour dev local — basculer vers schema.prisma (PostgreSQL) en production (Vercel)
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = env("DB_PROVIDER")
   url      = env("DATABASE_URL")
 }
 

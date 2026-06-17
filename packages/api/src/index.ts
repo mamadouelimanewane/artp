@@ -1,6 +1,6 @@
 import "express-async-errors";
 import dotenv from "dotenv";
-dotenv.config({ path: "../../.env" });
+dotenv.config();
 
 import express from "express";
 import helmet from "helmet";
@@ -14,7 +14,7 @@ import { logger } from "./utils/logger";
 import { prisma } from "./db/prisma";
 
 const app = express();
-const PORT = process.env.API_PORT ?? 3001;
+const PORT = process.env.PORT ?? process.env.API_PORT ?? 3001;
 
 // ── Security ────────────────────────────────────────────────────
 app.use(helmet());
