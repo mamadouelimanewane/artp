@@ -8,6 +8,9 @@ import ComplaintDetailPage from "./pages/ComplaintDetailPage";
 import QosMapPage from "./pages/QosMapPage";
 import UsersPage from "./pages/UsersPage";
 import StatsPage from "./pages/StatsPage";
+import NotificationsPage from "./pages/NotificationsPage";
+import ReportsPage from "./pages/ReportsPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const token = useAuthStore((s) => s.token);
@@ -34,6 +37,9 @@ export default function App() {
         <Route path="qos-map" element={<QosMapPage />} />
         <Route path="users" element={<UsersPage />} />
         <Route path="stats" element={<StatsPage />} />
+        <Route path="notifications" element={<NotificationsPage />} />
+        <Route path="reports" element={<ReportsPage />} />
+        <Route path="profile" element={<ProfilePage />} />
       </Route>
     </Routes>
   );
