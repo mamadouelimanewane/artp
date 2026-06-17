@@ -11,10 +11,14 @@ import fs from "fs";
 const router = Router();
 
 const uploadDir = process.env.UPLOAD_DIR ?? "./uploads";
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+// En local uniquement — Vercel a un filesystem read-only
+if (process.env.NODE_ENV !== "production") {
+  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 const storage = multer.diskStorage({
-  destination: uploadDir,
+  destination: process.env.NODE_ENV === "production" ? "/tmp" : uploadDir,
   filename: (_req, file, cb) => {
     const ext = path.extname(file.originalname);
     cb(null, `${uuidv4()}${ext}`);
