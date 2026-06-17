@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend,
-  LineChart, Line, CartesianGrid,
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
 } from "recharts";
 
 const COLORS = { orange: "#f97316", free: "#6366f1", expresso: "#10b981" };
@@ -68,11 +67,7 @@ export default function StatsPage() {
               <XAxis dataKey="operator" tick={{ fontSize: 12 }} />
               <YAxis tick={{ fontSize: 12 }} />
               <Tooltip formatter={(v: number) => `${v} Mbps`} />
-              <Bar dataKey="avgDownload" name="Téléchargement" radius={[6, 6, 0, 0]}>
-                {stats.map((op) => (
-                  <></>
-                ))}
-              </Bar>
+              <Bar dataKey="avgDownload" name="Téléchargement" fill="#3b5ef0" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
