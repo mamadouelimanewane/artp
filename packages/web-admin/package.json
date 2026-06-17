@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "vercel-build": "cd ../api && npx prisma generate --schema prisma/schema.prod.prisma && npx prisma migrate deploy --schema prisma/schema.prod.prisma && cd ../../packages/web-admin && npx vite build",
+    "vercel-build": "cd ../api && cp prisma/schema.prod.prisma prisma/schema.prisma && npx prisma generate && npx prisma migrate deploy && cd ../../packages/web-admin && npx vite build",
     "preview": "vite preview"
   },
   "dependencies": {
