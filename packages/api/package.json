@@ -9,6 +9,7 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "ts-node src/db/seed.ts",
     "db:generate": "prisma generate",
+    "vercel-build": "cp prisma/schema.prod.prisma prisma/schema.prisma && npx prisma generate && npx prisma migrate deploy",
     "lint": "eslint src --ext .ts"
   },
   "dependencies": {
