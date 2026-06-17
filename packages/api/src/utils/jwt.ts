@@ -14,7 +14,7 @@ export function signToken(user: Pick<User, "id" | "phone" | "role">): string {
   return jwt.sign(
     { userId: user.id, phone: user.phone, role: user.role } satisfies JwtPayload,
     SECRET,
-    { expiresIn: EXPIRES }
+    { expiresIn: EXPIRES as any }
   );
 }
 

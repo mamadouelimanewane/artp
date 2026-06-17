@@ -26,18 +26,21 @@ router.get("/dashboard", authenticate, requireRole("agent_artp","admin"), async 
     prisma.complaint.groupBy({
       by: ["status"],
       where: { createdAt: { gte: since } },
-      _count: { id: true },
+      orderBy: { _count: { status: "desc" } },
+      _count: { _all: true },
     }),
     prisma.complaint.groupBy({
       by: ["operator"],
       where: { createdAt: { gte: since } },
-      _count: { id: true },
+      orderBy: { _count: { operator: "desc" } },
+      _count: { _all: true },
     }),
     prisma.qosMeasure.groupBy({
       by: ["operator"],
       where: { createdAt: { gte: since } },
+      orderBy: { _count: { operator: "desc" } },
       _avg: { downloadSpeed: true, latency: true },
-      _count: { id: true },
+      _count: { _all: true },
     }),
     prisma.complaint.findMany({
       where: { createdAt: { gte: since } },
@@ -56,13 +59,13 @@ router.get("/dashboard", authenticate, requireRole("agent_artp","admin"), async 
       totalComplaints,
       blindSpotCount,
     },
-    complaintsByStatus: Object.fromEntries(complaintsByStatus.map((s) => [s.status, s._count.id])),
-    complaintsByOperator: Object.fromEntries(complaintsByOperator.map((s) => [s.operator, s._count.id])),
+    complaintsByStatus: Object.fromEntries(complaintsByStatus.map((s) => [s.status, s._count._all])),
+    complaintsByOperator: Object.fromEntries(complaintsByOperator.map((s) => [s.operator, s._count._all])),
     qosByOperator: measuresByOperator.map((s) => ({
       operator: s.operator,
-      avgDownload: Math.round((s._avg.downloadSpeed ?? 0) * 10) / 10,
-      avgLatency: Math.round(s._avg.latency ?? 0),
-      measureCount: s._count.id,
+      avgDownload: Math.round((s._avg?.downloadSpeed ?? 0) * 10) / 10,
+      avgLatency: Math.round(s._avg?.latency ?? 0),
+      measureCount: s._count._all,
     })),
     recentComplaints,
   });

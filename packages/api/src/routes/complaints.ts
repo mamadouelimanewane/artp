@@ -49,20 +49,20 @@ function generateReference(): string {
 router.post("/", authenticate, async (req, res) => {
   const body = createSchema.parse(req.body);
 
+  const { attachmentIds, ...bodyData } = body;
   const complaint = await prisma.complaint.create({
     data: {
       reference: generateReference(),
       userId: req.user!.userId,
-      ...body,
-      attachmentIds: undefined,
+      ...bodyData,
       events: {
         create: [{
           status: "submitted",
           message: `Votre plainte a été enregistrée avec succès. Un agent ARTP va l'examiner sous 48h ouvrables.`,
         }],
       },
-      ...(body.attachmentIds?.length && {
-        attachments: { connect: body.attachmentIds.map((id) => ({ id })) },
+      ...(attachmentIds?.length && {
+        attachments: { connect: attachmentIds.map((id) => ({ id })) },
       }),
     },
     include: { events: true, attachments: true },

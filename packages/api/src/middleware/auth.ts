@@ -1,8 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { verifyToken, type JwtPayload } from "../utils/jwt";
 import { unauthorized, forbidden } from "../utils/response";
-import type { UserRole } from "@prisma/client";
-
 declare global {
   namespace Express {
     interface Request {
@@ -24,9 +22,9 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export function requireRole(...roles: UserRole[]) {
+export function requireRole(...roles: string[]) {
   return (req: Request, res: Response, next: NextFunction) => {
-    if (!req.user || !roles.includes(req.user.role as UserRole)) {
+    if (!req.user || !roles.includes(req.user.role)) {
       return forbidden(res);
     }
     next();

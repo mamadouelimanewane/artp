@@ -97,24 +97,28 @@ router.get("/stats", async (req, res) => {
   const stats = await prisma.qosMeasure.groupBy({
     by: ["operator"],
     where,
-    _avg: {
-      downloadSpeed: true,
-      uploadSpeed: true,
-      latency: true,
-      mosScore: true,
-    },
-    _count: { id: true },
-    _sum: { isBlindSpot: true },
+    orderBy: { _count: { operator: "desc" } },
+    _avg: { downloadSpeed: true, uploadSpeed: true, latency: true, mosScore: true },
+    _count: { _all: true },
   });
+
+  // Count blind spots separately
+  const blindCounts = await prisma.qosMeasure.groupBy({
+    by: ["operator"],
+    where: { ...where, isBlindSpot: true },
+    orderBy: { _count: { operator: "desc" } },
+    _count: { _all: true },
+  });
+  const blindMap = Object.fromEntries(blindCounts.map((b) => [b.operator, b._count._all]));
 
   const formatted = stats.map((s) => ({
     operator: s.operator,
-    avgDownload: Math.round((s._avg.downloadSpeed ?? 0) * 10) / 10,
-    avgUpload: Math.round((s._avg.uploadSpeed ?? 0) * 10) / 10,
-    avgLatency: Math.round(s._avg.latency ?? 0),
-    avgMos: Math.round((s._avg.mosScore ?? 0) * 10) / 10,
-    measureCount: s._count.id,
-    blindSpotCount: Number(s._sum.isBlindSpot ?? 0),
+    avgDownload: Math.round(((s._avg?.downloadSpeed) ?? 0) * 10) / 10,
+    avgUpload: Math.round(((s._avg?.uploadSpeed) ?? 0) * 10) / 10,
+    avgLatency: Math.round((s._avg?.latency) ?? 0),
+    avgMos: Math.round(((s._avg?.mosScore) ?? 0) * 10) / 10,
+    measureCount: s._count._all,
+    blindSpotCount: blindMap[s.operator] ?? 0,
   }));
 
   ok(res, formatted);
@@ -129,14 +133,14 @@ router.get("/ranking", async (req, res) => {
     by: ["operator"],
     where: { createdAt: { gte: since } },
     _avg: { downloadSpeed: true, latency: true, mosScore: true },
-    _count: { id: true },
+    _count: { _all: true },
     orderBy: { _avg: { downloadSpeed: "desc" } },
   });
 
   const ranked = stats.map((s, i) => {
-    const dl = s._avg.downloadSpeed ?? 0;
-    const lat = s._avg.latency ?? 999;
-    const mos = s._avg.mosScore ?? 1;
+    const dl = s._avg?.downloadSpeed ?? 0;
+    const lat = s._avg?.latency ?? 999;
+    const mos = s._avg?.mosScore ?? 1;
     // Score composite: 40% débit + 30% latence + 30% MOS
     const score = Math.round(
       (Math.min(dl / 50, 1) * 40) +
@@ -150,7 +154,7 @@ router.get("/ranking", async (req, res) => {
       avgDownload: Math.round(dl * 10) / 10,
       avgLatency: Math.round(lat),
       avgMos: Math.round(mos * 10) / 10,
-      measureCount: s._count.id,
+      measureCount: s._count._all,
     };
   });
 
