@@ -2,16 +2,27 @@ import "express-async-errors";
 import dotenv from "dotenv";
 dotenv.config();
 
-import app from "./app";
+import express from "express";
 
-export default app;
+let realApp: express.Express | null = null;
+let startupError: Error | null = null;
 
-if (process.env.NODE_ENV !== "production") {
-  const { prisma } = require("./db/prisma");
-  const PORT = process.env.PORT ?? process.env.API_PORT ?? 3001;
-  prisma.$connect().then(() => {
-    app.listen(PORT, () => {
-      console.log(`ARTP API sur http://localhost:${PORT}`);
-    });
-  });
+try {
+  realApp = require("./app").default;
+} catch (err: any) {
+  startupError = err;
 }
+
+const debugApp = express();
+debugApp.use(express.json());
+debugApp.use((req: express.Request, res: express.Response) => {
+  if (startupError) {
+    return res.status(500).json({
+      error: startupError.message,
+      stack: startupError.stack?.split("\n").slice(0, 8),
+    });
+  }
+  return realApp!(req, res);
+});
+
+export default debugApp;
