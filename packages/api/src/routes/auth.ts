@@ -22,12 +22,11 @@ router.post("/request-otp", authLimiter, async (req, res) => {
 
   const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 min
 
-  // Upsert user + create OTP
-  const user = await prisma.user.upsert({
-    where: { phone },
-    update: {},
-    create: { phone, region: "dakar" },
-  });
+  // Find or create user (upsert utilise une transaction implicite, incompatible HTTP)
+  let user = await prisma.user.findUnique({ where: { phone } });
+  if (!user) {
+    user = await prisma.user.create({ data: { phone, region: "dakar" } });
+  }
 
   await prisma.otpCode.create({ data: { userId: user.id, code: otp, expiresAt } });
 
