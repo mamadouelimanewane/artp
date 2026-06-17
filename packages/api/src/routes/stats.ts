@@ -59,13 +59,13 @@ router.get("/dashboard", authenticate, requireRole("agent_artp","admin"), async 
       totalComplaints,
       blindSpotCount,
     },
-    complaintsByStatus: Object.fromEntries(complaintsByStatus.map((s) => [s.status, s._count._all])),
-    complaintsByOperator: Object.fromEntries(complaintsByOperator.map((s) => [s.operator, s._count._all])),
+    complaintsByStatus: Object.fromEntries(complaintsByStatus.map((s) => [s.status, (s._count as any)._all ?? 0])),
+    complaintsByOperator: Object.fromEntries(complaintsByOperator.map((s) => [s.operator, (s._count as any)._all ?? 0])),
     qosByOperator: measuresByOperator.map((s) => ({
       operator: s.operator,
       avgDownload: Math.round((s._avg?.downloadSpeed ?? 0) * 10) / 10,
       avgLatency: Math.round(s._avg?.latency ?? 0),
-      measureCount: s._count._all,
+      measureCount: (s._count as any)._all ?? 0,
     })),
     recentComplaints,
   });

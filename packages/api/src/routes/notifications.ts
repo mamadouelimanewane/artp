@@ -51,7 +51,7 @@ router.post("/broadcast", authenticate, requireRole("admin","agent_artp"), async
   const { userId, ...data } = schema.parse(req.body);
 
   const notif = await prisma.notification.create({
-    data: { ...data, ...(userId ? { userId } : {}) },
+    data: { ...data, userId } as any,
   });
 
   created(res, notif, "Notification envoyée");
