@@ -13,7 +13,7 @@ const app = express();
 
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CORS_ORIGIN?.split(",") ?? ["http://localhost:5173"],
+  origin: true, // autorise toutes les origines (à restreindre après go-live)
   credentials: true,
 }));
 app.use(compression());
