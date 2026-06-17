@@ -1,7 +1,0 @@
-{
-  "version": 2,
-  "installCommand": "npm install --prefix packages/web-admin",
-  "buildCommand": "npm run build --prefix packages/web-admin",
-  "outputDirectory": "packages/web-admin/dist",
-  "framework": null
-}
