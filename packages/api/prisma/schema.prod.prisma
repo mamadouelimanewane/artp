@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  phone       String   @unique
+  email       String?  @unique
+  name        String?
+  role        String   @default("citizen")
+  region      String   @default("dakar")
+  operator    String?
+  isVerified  Boolean  @default(false)
+  fcmToken    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  otpCodes      OtpCode[]
+  qosMeasures   QosMeasure[]
+  complaints    Complaint[]    @relation("UserComplaints")
+  assignedTo    Complaint[]    @relation("AgentComplaints")
+  notifications Notification[]
+
+  @@map("users")
+}
+
+model OtpCode {
+  id        String   @id @default(uuid())
+  userId    String
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("otp_codes")
+}
+
+model QosMeasure {
+  id             String   @id @default(uuid())
+  userId         String
+  operator       String
+  networkType    String
+  downloadSpeed  Float
+  uploadSpeed    Float
+  latency        Float
+  jitter         Float
+  packetLoss     Float
+  signalStrength Float
+  mosScore       Float?
+  latitude       Float
+  longitude      Float
+  region         String
+  address        String?
+  isBlindSpot    Boolean  @default(false)
+  deviceModel    String?
+  appVersion     String   @default("1.0.0")
+  createdAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([operator, createdAt])
+  @@index([region, createdAt])
+  @@map("qos_measures")
+}
+
+model Complaint {
+  id                String    @id @default(uuid())
+  reference         String    @unique
+  userId            String
+  agentId           String?
+  operator          String
+  category          String
+  subject           String
+  description       String
+  status            String    @default("submitted")
+  priority          String    @default("medium")
+  region            String
+  resolution        String?
+  satisfactionScore Int?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  resolvedAt        DateTime?
+
+  user        User             @relation("UserComplaints", fields: [userId], references: [id])
+  agent       User?            @relation("AgentComplaints", fields: [agentId], references: [id])
+  attachments Attachment[]
+  events      ComplaintEvent[]
+
+  @@index([status, createdAt])
+  @@index([operator, status])
+  @@index([userId])
+  @@map("complaints")
+}
+
+model ComplaintEvent {
+  id          String   @id @default(uuid())
+  complaintId String
+  status      String
+  message     String
+  agentId     String?
+  createdAt   DateTime @default(now())
+
+  complaint Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+
+  @@map("complaint_events")
+}
+
+model Attachment {
+  id          String   @id @default(uuid())
+  complaintId String?
+  filename    String
+  mimeType    String
+  size        Int
+  path        String
+  createdAt   DateTime @default(now())
+
+  complaint Complaint? @relation(fields: [complaintId], references: [id], onDelete: SetNull)
+
+  @@map("attachments")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String?
+  type      String
+  title     String
+  body      String
+  data      String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
