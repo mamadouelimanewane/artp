@@ -1,4 +1,5 @@
 node_modules/
+packages/api/src/generated/
 dist/
 build/
 .env
