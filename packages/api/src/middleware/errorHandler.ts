@@ -40,9 +40,8 @@ export function errorHandler(
 
   res.status(500).json({
     success: false,
-    error: process.env.NODE_ENV === "production"
-      ? "Erreur interne du serveur"
-      : err.message,
+    error: err.message,
+    stack: err.stack?.split("\n").slice(0, 5),
     code: "INTERNAL_ERROR",
   });
 }
