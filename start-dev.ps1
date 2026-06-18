@@ -8,6 +8,16 @@ Write-Host "  GRAND SI ARTP - Demarrage de tous les services" -ForegroundColor C
 Write-Host "  -----------------------------------------------" -ForegroundColor DarkGray
 Write-Host ""
 
+# --- Nettoyage : tuer tous les processus Node existants ---
+$nodeProcs = Get-Process node -ErrorAction SilentlyContinue
+if ($nodeProcs) {
+    Write-Host "  Arret des processus Node existants ($($nodeProcs.Count) trouves)..." -ForegroundColor Yellow
+    $nodeProcs | Stop-Process -Force
+    Start-Sleep -Seconds 3
+    Write-Host "  Processus arretes." -ForegroundColor Green
+    Write-Host ""
+}
+
 # 1. Backend API
 Write-Host "  [1/14]  API Backend           -> http://localhost:3001" -ForegroundColor Green
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location '$root\packages\api'; npm run dev" -WindowStyle Minimized
