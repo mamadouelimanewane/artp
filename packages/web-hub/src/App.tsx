@@ -105,8 +105,22 @@ function StarRating({ n }: { n: number }) {
 export default function App() {
   const [hovered, setHovered] = useState<string | null>(null);
 
-  function openModule(port: number) {
-    window.open(`http://localhost:${port}`, "_blank");
+  const VERCEL_URLS: Record<string, string> = {
+    pnir:     "https://artp-pnir.vercel.app",
+    citizen:  "https://artp-web-citizen.vercel.app",
+    spectrum: "https://artp-web-spectrum.vercel.app",
+    domain:   "https://artp-web-domain.vercel.app",
+    academy:  "https://artp-web-academy.vercel.app",
+    fraud:    "https://artp-web-fraud.vercel.app",
+    opendata: "https://artp-opendata.vercel.app",
+    alert:    "https://web-alert-blond.vercel.app",
+    ailake:   "https://web-ailake.vercel.app",
+    gateway:  "https://web-gateway-psi.vercel.app",
+  };
+
+  function openModule(port: number, id: string) {
+    const url = VERCEL_URLS[id] ?? `http://localhost:${port}`;
+    window.open(url, "_blank");
   }
 
   return (
@@ -211,7 +225,7 @@ export default function App() {
               }}
               onMouseEnter={() => setHovered(m.id)}
               onMouseLeave={() => setHovered(null)}
-              onClick={() => openModule(m.port)}
+              onClick={() => openModule(m.port, m.id)}
             >
               {/* Barre gradient top */}
               <div className={`h-1 bg-gradient-to-r ${m.color}`} />
@@ -247,7 +261,7 @@ export default function App() {
                 <button
                   className={`w-full py-3 rounded-xl text-sm font-bold transition-all duration-200 bg-gradient-to-r ${m.color} text-white`}
                   style={{ opacity: hovered === m.id ? 1 : 0.85 }}
-                  onClick={e => { e.stopPropagation(); openModule(m.port); }}
+                  onClick={e => { e.stopPropagation(); openModule(m.port, m.id); }}
                 >
                   Ouvrir le module →
                 </button>
