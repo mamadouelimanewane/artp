@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Inter', system-ui, sans-serif; @apply bg-slate-50 text-slate-900 antialiased; }
+}
+
+@layer components {
+  .card  { @apply bg-white rounded-2xl border border-slate-100 shadow-card; }
+  .badge { @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold; }
+  .btn   { @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all; }
+  .btn-primary   { @apply btn bg-artp-600 hover:bg-artp-700 text-white shadow-sm; }
+  .btn-secondary { @apply btn bg-white border border-slate-200 hover:bg-slate-50 text-slate-700; }
+  .nav-item { @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors; }
+}
+
+@keyframes fade-up { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.fade-up { animation: fade-up 0.3s ease; }
