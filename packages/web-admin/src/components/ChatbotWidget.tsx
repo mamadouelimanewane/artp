@@ -11,14 +11,16 @@ interface Message {
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
+  suggestions?: string[];
 }
 
 const WELCOME_MESSAGE: Message = {
   id: "welcome",
   role: "assistant",
   content:
-    "Bonjour! Je suis l'assistant ARTP. Je peux vous aider sur la qualité de service, les plaintes et la réglementation télécom au Sénégal. / Nanga def! Mën naa la ndimbal ci télécommunications yi.",
+    "Bonjour ! Je suis l'assistant ARTP. Je peux vous aider sur les plaintes, la qualité réseau et la réglementation télécom au Sénégal.\n\nNanga def ! Mën naa la ndimbal ci télécommunications yi.",
   timestamp: new Date(),
+  suggestions: ["Déposer une plainte", "Tester mon réseau", "Contacter l'ARTP", "Signaler une zone blanche"],
 };
 
 function fallbackResponse(message: string): string {
@@ -99,14 +101,15 @@ export default function ChatbotWidget() {
     setLoading(true);
 
     try {
-      const res = await api.post("/chatbot/message", { message: text });
-      const responseText =
-        res.data?.data?.response ?? res.data?.response ?? fallbackResponse(text);
+      const res = await api.post("/chatbot/chat", { message: text, lang: "fr", context: "general" });
+      const data = res.data?.data ?? res.data ?? {};
+      const responseText = data.reply ?? fallbackResponse(text);
       const assistantMsg: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content: responseText,
         timestamp: new Date(),
+        suggestions: data.suggestions ?? [],
       };
       setMessages((prev) => [...prev, assistantMsg]);
     } catch {
@@ -176,21 +179,36 @@ export default function ChatbotWidget() {
                     A
                   </div>
                 )}
-                <div
-                  className={`max-w-[78%] ${
-                    msg.role === "user"
-                      ? "bg-artp-600 text-white rounded-2xl rounded-br-sm"
-                      : "bg-gray-100 text-gray-800 rounded-2xl rounded-bl-sm"
-                  } px-3.5 py-2.5`}
-                >
-                  <p className="text-sm leading-relaxed">{msg.content}</p>
-                  <p
-                    className={`text-xs mt-1 ${
-                      msg.role === "user" ? "text-artp-200" : "text-gray-400"
-                    }`}
+                <div className="max-w-[78%] flex flex-col gap-1.5">
+                  <div
+                    className={`${
+                      msg.role === "user"
+                        ? "bg-artp-600 text-white rounded-2xl rounded-br-sm"
+                        : "bg-gray-100 text-gray-800 rounded-2xl rounded-bl-sm"
+                    } px-3.5 py-2.5`}
                   >
-                    {formatTime(msg.timestamp)}
-                  </p>
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                    <p
+                      className={`text-xs mt-1 ${
+                        msg.role === "user" ? "text-artp-200" : "text-gray-400"
+                      }`}
+                    >
+                      {formatTime(msg.timestamp)}
+                    </p>
+                  </div>
+                  {msg.suggestions && msg.suggestions.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-0.5">
+                      {msg.suggestions.map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => { setInput(s); setTimeout(() => inputRef.current?.focus(), 50); }}
+                          className="text-xs bg-white border border-artp-200 text-artp-700 rounded-full px-2.5 py-1 hover:bg-artp-50 transition-colors"
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

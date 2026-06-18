@@ -91,43 +91,49 @@ async function main() {
     });
   }
 
-  const complaint = await prisma.complaint.create({
-    data: {
-      reference: "ARTP-2026-00001",
-      userId: citizens[0].id,
-      agentId: agent.id,
-      operator: "orange",
-      category: "billing_error",
-      subject: "Facturation incorrecte sur mon forfait data",
-      description: "J'ai été débité de 5000 FCFA supplémentaires sans avoir souscrit à un service SVA.",
-      status: "under_review",
-      priority: "medium",
-      region: "dakar",
-      events: {
-        create: [
-          { status: "submitted",    message: "Plainte reçue. Référence : ARTP-2026-00001" },
-          { status: "under_review", message: "Votre plainte est en cours d'examen par nos agents.", agentId: agent.id },
-        ],
+  const existingC1 = await prisma.complaint.findUnique({ where: { reference: "ARTP-2026-00001" } });
+  if (!existingC1) {
+    await prisma.complaint.create({
+      data: {
+        reference: "ARTP-2026-00001",
+        userId: citizens[0].id,
+        agentId: agent.id,
+        operator: "orange",
+        category: "billing_error",
+        subject: "Facturation incorrecte sur mon forfait data",
+        description: "J'ai été débité de 5000 FCFA supplémentaires sans avoir souscrit à un service SVA.",
+        status: "under_review",
+        priority: "medium",
+        region: "dakar",
+        events: {
+          create: [
+            { status: "submitted",    message: "Plainte reçue. Référence : ARTP-2026-00001" },
+            { status: "under_review", message: "Votre plainte est en cours d'examen par nos agents.", agentId: agent.id },
+          ],
+        },
       },
-    },
-  });
+    });
+  }
 
-  await prisma.complaint.create({
-    data: {
-      reference: "ARTP-2026-00002",
-      userId: citizens[1].id,
-      operator: "free",
-      category: "network_outage",
-      subject: "Coupure réseau depuis 3 jours à Thiès",
-      description: "Le réseau Free est totalement indisponible dans mon quartier depuis le 14/06/2026.",
-      status: "submitted",
-      priority: "high",
-      region: "thies",
-      events: {
-        create: [{ status: "submitted", message: "Plainte enregistrée. Référence : ARTP-2026-00002" }],
+  const existingC2 = await prisma.complaint.findUnique({ where: { reference: "ARTP-2026-00002" } });
+  if (!existingC2) {
+    await prisma.complaint.create({
+      data: {
+        reference: "ARTP-2026-00002",
+        userId: citizens[1].id,
+        operator: "free",
+        category: "network_outage",
+        subject: "Coupure réseau depuis 3 jours à Thiès",
+        description: "Le réseau Free est totalement indisponible dans mon quartier depuis le 14/06/2026.",
+        status: "submitted",
+        priority: "high",
+        region: "thies",
+        events: {
+          create: [{ status: "submitted", message: "Plainte enregistrée. Référence : ARTP-2026-00002" }],
+        },
       },
-    },
-  });
+    });
+  }
 
   await prisma.notification.create({
     data: {

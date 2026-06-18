@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "hub", "runtimeExecutable": "npx", "runtimeArgs": ["vite", "--port", "5186"], "port": 5186 },
+    { "name": "web-opendata", "runtimeExecutable": "npx", "runtimeArgs": ["vite", "--port", "5187"], "port": 5187 },
+    { "name": "web-alert", "runtimeExecutable": "npx", "runtimeArgs": ["vite", "--port", "5188"], "port": 5188 },
+    { "name": "web-ailake", "runtimeExecutable": "npx", "runtimeArgs": ["vite", "--port", "5189"], "port": 5189 },
+    { "name": "web-gateway", "runtimeExecutable": "npx", "runtimeArgs": ["vite", "--port", "5190"], "port": 5190 }
+  ]
+}

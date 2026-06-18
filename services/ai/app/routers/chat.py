@@ -23,7 +23,7 @@ class ChatResponse(BaseModel):
 @router.post("/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest):
     conv_id = req.conversation_id or str(uuid.uuid4())
-    reply, intent, suggestions = get_response(req.message, req.lang, req.context)
+    reply, intent, suggestions = await get_response(req.message, req.lang, req.context)
 
     return ChatResponse(
         reply=reply,

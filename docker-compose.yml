@@ -1,13 +1,25 @@
 version: "3.9"
 
+# ─────────────────────────────────────────────────────────────────────────────
+#  Mon Réseau SN — ARTP Sénégal
+#  Stack complète : infrastructure + 3 services applicatifs
+#
+#  Démarrage :  docker compose up -d
+#  Logs :       docker compose logs -f api
+#  Stop :       docker compose down
+# ─────────────────────────────────────────────────────────────────────────────
+
 services:
+
+  # ── Infrastructure ─────────────────────────────────────────────────────────
+
   postgres:
     image: postgis/postgis:16-3.4
     container_name: artp_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: artp_monreseau
-      POSTGRES_USER: artp
+      POSTGRES_DB:       artp_monreseau
+      POSTGRES_USER:     artp
       POSTGRES_PASSWORD: artp_secret
     ports:
       - "5432:5432"
@@ -24,6 +36,7 @@ services:
     image: redis:7-alpine
     container_name: artp_redis
     restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
     ports:
       - "6379:6379"
     volumes:
@@ -43,8 +56,109 @@ services:
     environment:
       ADMINER_DEFAULT_SERVER: postgres
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+
+  # ── Backend API (Node.js + Express + Prisma) ───────────────────────────────
+
+  api:
+    build:
+      context: ./packages/api
+      dockerfile: Dockerfile
+    container_name: artp_api
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV:    production
+      PORT:        3001
+      DATABASE_URL: postgresql://artp:artp_secret@postgres:5432/artp_monreseau
+      REDIS_URL:   redis://redis:6379
+      JWT_SECRET:  ${JWT_SECRET:-artp-prod-secret-change-me-2026}
+      JWT_EXPIRES_IN: 7d
+      AI_SERVICE_URL: http://ai:8001
+      UPLOAD_DIR:  /app/uploads
+      CORS_ORIGIN: "http://localhost:5173,http://localhost:5174,http://localhost:5179"
+    volumes:
+      - api_uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://localhost:3001/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ── Service IA Python (FastAPI + chatbot) ──────────────────────────────────
+
+  ai:
+    build:
+      context: ./services/ai
+      dockerfile: Dockerfile
+    container_name: artp_ai
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      API_URL:           http://api:3001
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ENVIRONMENT:       production
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://localhost:8001/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  # ── Portail Admin Web (Nginx serving React build) ─────────────────────────
+
+  web-admin:
+    build:
+      context: ./packages/web-admin
+      dockerfile: Dockerfile
+    container_name: artp_web_admin
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  # ── Portail Citoyen (Nginx serving React build) ────────────────────────────
+
+  web-citizen:
+    build:
+      context: ./packages/web-citizen
+      dockerfile: Dockerfile
+    container_name: artp_web_citizen
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  # ── Portail Public (Nginx serving React build) ─────────────────────────────
+
+  web-public:
+    build:
+      context: ./packages/web-public
+      dockerfile: Dockerfile
+    container_name: artp_web_public
+    restart: unless-stopped
+    ports:
+      - "8090:80"
+    depends_on:
+      - api
 
 volumes:
   postgres_data:
   redis_data:
+  api_uploads:
