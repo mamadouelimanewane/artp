@@ -183,28 +183,14 @@ export default function App() {
           </p>
         </div>
 
-        {/* KPIs globaux */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-          {GLOBAL_KPIS.map(k => (
-            <div key={k.label} className="rounded-2xl p-5 border border-white/10 text-center"
-              style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(10px)" }}>
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${k.color} flex items-center justify-center text-lg mx-auto mb-3`}>
-                {k.icon}
-              </div>
-              <p className="text-2xl font-black text-white">{k.value}</p>
-              <p className="text-xs text-white/50 mt-1">{k.label}</p>
-            </div>
-          ))}
-        </div>
-
         {/* Titre section */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-xl font-bold text-white">Modules du Grand SI</h3>
-            <p className="text-white/40 text-sm mt-0.5">Cliquez sur un module pour l'ouvrir</p>
+            <h3 className="text-xl font-bold text-white">Applications du Grand SI</h3>
+            <p className="text-white/40 text-sm mt-0.5">Cliquez sur une application pour l'ouvrir</p>
           </div>
           <span className="text-xs text-white/40 border border-white/20 px-3 py-1.5 rounded-full">
-            {MODULES.filter(m => m.status === "active").length} / {MODULES.length} actifs
+            {MODULES.filter(m => m.status === "active").length} / {MODULES.length} actives
           </span>
         </div>
 
@@ -263,9 +249,23 @@ export default function App() {
                   style={{ opacity: hovered === m.id ? 1 : 0.85 }}
                   onClick={e => { e.stopPropagation(); openModule(m.port, m.id); }}
                 >
-                  Ouvrir le module →
+                  Ouvrir l'application →
                 </button>
               </div>
+            </div>
+          ))}
+        </div>
+
+        {/* KPIs globaux */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+          {GLOBAL_KPIS.map(k => (
+            <div key={k.label} className="rounded-2xl p-5 border border-white/10 text-center"
+              style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(10px)" }}>
+              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${k.color} flex items-center justify-center text-lg mx-auto mb-3`}>
+                {k.icon}
+              </div>
+              <p className="text-2xl font-black text-white">{k.value}</p>
+              <p className="text-xs text-white/50 mt-1">{k.label}</p>
             </div>
           ))}
         </div>
@@ -274,7 +274,7 @@ export default function App() {
         <div className="mt-14 pt-6 border-t border-white/10 flex items-center justify-between text-xs text-white/30">
           <span>ARTP Sénégal · Grand SI 2026–2030</span>
           <span>Offre Spontanée · Code des Marchés Publics</span>
-          <span>10 modules · 18 services</span>
+          <span>10 applications · 18 services</span>
         </div>
       </main>
     </div>
