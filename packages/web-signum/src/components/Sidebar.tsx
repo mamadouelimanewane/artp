@@ -5,7 +5,7 @@ const NAV_ACCUEIL = [
 ];
 
 const NAV_CORE = [
-  { to: "/",            label: "Centre de Commandement", icon: "🛰️" },
+  { to: "/dashboard",   label: "Centre de Commandement", icon: "🛰️" },
   { to: "/trafic",      label: "Surveillance Trafic",    icon: "📡" },
   { to: "/imei",        label: "Registre IMEI National", icon: "📱" },
   { to: "/mobilemoney", label: "Mobile Money & AML",     icon: "💳" },
@@ -64,7 +64,7 @@ export default function Sidebar() {
         </div>
         <div className="pt-2 border-t border-white/10 mb-3 space-y-0.5">
           {NAV_CORE.map(n => (
-            <NavLink key={n.to} to={n.to} end={n.to === "/"}
+            <NavLink key={n.to} to={n.to} end={n.to === "/dashboard"}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150
                  ${isActive ? "text-white font-semibold" : "text-white/55 hover:text-white/90 hover:bg-white/5"}`}
