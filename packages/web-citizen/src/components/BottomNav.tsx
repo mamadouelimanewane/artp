@@ -1,22 +1,22 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
   HomeIcon, ChatBubbleLeftRightIcon, SignalIcon,
-  ClipboardDocumentListIcon, UserIcon,
+  ClipboardDocumentListIcon, ChartBarIcon,
 } from "@heroicons/react/24/outline";
 import {
   HomeIcon as HomeIconSolid,
   ChatBubbleLeftRightIcon as ChatSolid,
   SignalIcon as SignalSolid,
   ClipboardDocumentListIcon as ClipboardSolid,
-  UserIcon as UserSolid,
+  ChartBarIcon as ChartSolid,
 } from "@heroicons/react/24/solid";
 
 const tabs = [
-  { to: "/",           label: "Accueil",     Icon: HomeIcon,                  IconActive: HomeIconSolid,   color: "text-blue-600",    pill: "bg-blue-100"    },
-  { to: "/complaints", label: "Plaintes",    Icon: ClipboardDocumentListIcon, IconActive: ClipboardSolid,  color: "text-rose-600",    pill: "bg-rose-100"    },
-  { to: "/qos",        label: "Test",        Icon: SignalIcon,                 IconActive: SignalSolid,     color: "text-emerald-600", pill: "bg-emerald-100" },
-  { to: "/chat",       label: "Assistant",   Icon: ChatBubbleLeftRightIcon,    IconActive: ChatSolid,       color: "text-violet-600",  pill: "bg-violet-100"  },
-  { to: "/profile",    label: "Profil",      Icon: UserIcon,                   IconActive: UserSolid,       color: "text-amber-600",   pill: "bg-amber-100"   },
+  { to: "/",             label: "Accueil",     Icon: HomeIcon,                  IconActive: HomeIconSolid,   color: "text-blue-600",    pill: "bg-blue-100"    },
+  { to: "/complaints",   label: "Plaintes",    Icon: ClipboardDocumentListIcon, IconActive: ClipboardSolid,  color: "text-rose-600",    pill: "bg-rose-100"    },
+  { to: "/qos",          label: "Test",        Icon: SignalIcon,                 IconActive: SignalSolid,     color: "text-emerald-600", pill: "bg-emerald-100" },
+  { to: "/comparateur",  label: "Tarifs",      Icon: ChartBarIcon,               IconActive: ChartSolid,      color: "text-teal-600",    pill: "bg-teal-100"    },
+  { to: "/chat",         label: "Assistant",   Icon: ChatBubbleLeftRightIcon,    IconActive: ChatSolid,       color: "text-violet-600",  pill: "bg-violet-100"  },
 ];
 
 export default function BottomNav() {

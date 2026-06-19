@@ -5,6 +5,7 @@ import CapteursPage from "./pages/CapteursPage";
 import InterferencesPage from "./pages/InterferencesPage";
 import AttributionPage from "./pages/AttributionPage";
 import RapportsPage from "./pages/RapportsPage";
+import CinqGPage from "./pages/CinqGPage";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/interferences" element={<InterferencesPage />} />
             <Route path="/attribution" element={<AttributionPage />} />
             <Route path="/rapports" element={<RapportsPage />} />
+            <Route path="/5g" element={<CinqGPage />} />
           </Routes>
         </main>
       </div>

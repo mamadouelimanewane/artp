@@ -5,6 +5,7 @@ import RegistrePage from "./pages/RegistrePage";
 import DnssecPage from "./pages/DnssecPage";
 import CybersquattingPage from "./pages/CybersquattingPage";
 import RegistrarsPage from "./pages/RegistrarsPage";
+import ObservatoirePage from "./pages/ObservatoirePage";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/dnssec" element={<DnssecPage />} />
             <Route path="/cybersquatting" element={<CybersquattingPage />} />
             <Route path="/registrars" element={<RegistrarsPage />} />
+            <Route path="/observatoire" element={<ObservatoirePage />} />
           </Routes>
         </main>
       </div>

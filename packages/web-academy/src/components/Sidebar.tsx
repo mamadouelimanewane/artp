@@ -6,6 +6,8 @@ const NAV = [
   { to: "/certifications", label: "Certifications", icon: "🏆" },
   { to: "/apprenants", label: "Apprenants", icon: "👥" },
   { to: "/live", label: "Sessions Live", icon: "🎥" },
+  { to: "/veille", label: "Veille & Podcast", icon: "🎙️" },
+  { to: "/sandbox", label: "Conformité & Sandbox", icon: "🧪" },
 ];
 
 export default function Sidebar() {

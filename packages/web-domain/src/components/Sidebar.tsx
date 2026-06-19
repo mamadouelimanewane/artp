@@ -6,6 +6,7 @@ const NAV = [
   { to: "/dnssec", label: "DNSSEC & Sécurité", icon: "🔒" },
   { to: "/cybersquatting", label: "Anti-Cybersquatting", icon: "🚫" },
   { to: "/registrars", label: "Registrars Agrées", icon: "🏢" },
+  { to: "/observatoire", label: "Observatoire .sn", icon: "📊" },
 ];
 
 export default function Sidebar() {

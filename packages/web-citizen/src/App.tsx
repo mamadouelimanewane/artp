@@ -9,6 +9,7 @@ import ComplaintDetailPage from "./pages/ComplaintDetailPage";
 import QosTestPage from "./pages/QosTestPage";
 import ChatPage from "./pages/ChatPage";
 import ProfilePage from "./pages/ProfilePage";
+import ComparateurPage from "./pages/ComparateurPage";
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const token = useAuthStore((s) => s.token);
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/qos" element={<RequireAuth><QosTestPage /></RequireAuth>} />
         <Route path="/chat" element={<RequireAuth><ChatPage /></RequireAuth>} />
         <Route path="/profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
+        <Route path="/comparateur" element={<RequireAuth><ComparateurPage /></RequireAuth>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

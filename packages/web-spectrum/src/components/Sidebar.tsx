@@ -6,6 +6,7 @@ const NAV = [
   { to: "/interferences", label: "Interférences", icon: "⚡" },
   { to: "/attribution", label: "Attribution Spectre", icon: "🗺️" },
   { to: "/rapports", label: "Rapports & Alertes", icon: "📋" },
+  { to: "/5g", label: "Planification 5G", icon: "🚀" },
 ];
 
 export default function Sidebar() {

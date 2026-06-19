@@ -5,6 +5,8 @@ import CataloguePage from "./pages/CataloguePage";
 import CertificationsPage from "./pages/CertificationsPage";
 import ApprenantsPage from "./pages/ApprenantsPage";
 import LivePage from "./pages/LivePage";
+import VeillePage from "./pages/VeillePage";
+import SandboxPage from "./pages/SandboxPage";
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
             <Route path="/certifications" element={<CertificationsPage />} />
             <Route path="/apprenants" element={<ApprenantsPage />} />
             <Route path="/live" element={<LivePage />} />
+            <Route path="/veille" element={<VeillePage />} />
+            <Route path="/sandbox" element={<SandboxPage />} />
           </Routes>
         </main>
       </div>
