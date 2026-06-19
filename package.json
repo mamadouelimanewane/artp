@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "ARTP Senegal — Plateforme Mon Reseau SN",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "concurrently \"npm run dev -w packages/api\" \"npm run dev -w packages/web-admin\"",
     "dev:api": "npm run dev -w packages/api",
@@ -43,6 +45,7 @@
     "@types/node": "^20.14.0",
     "@types/uuid": "^10.0.0",
     "concurrently": "^9.0.0",
+    "pptxgenjs": "^4.0.1",
     "prisma": "^5.14.0",
     "typescript": "^5.4.0"
   }
