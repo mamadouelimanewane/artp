@@ -2,8 +2,148 @@
 @tailwind components;
 @tailwind utilities;
 
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #faf5ff; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #020617;
+}
+
 .card { @apply bg-white rounded-2xl shadow-sm border border-slate-100; }
 .badge { @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold; }
 .sidebar { @apply fixed left-0 top-0 h-full w-60 bg-gradient-to-b from-pnir-900 to-pnir-800 z-40; }
 .main-content { @apply ml-60 min-h-screen; }
+
+/* ── Responsive global overrides ────────────────────────────────────────────── */
+
+/* Padding de page mobile */
+@media (max-width: 768px) {
+  /* Réduire le padding des pages internes */
+  .p-6 { padding: 1rem !important; }
+  .p-5 { padding: 0.9rem !important; }
+  .space-y-6 > * + * { margin-top: 1rem !important; }
+  .space-y-8 > * + * { margin-top: 1.25rem !important; }
+
+  /* Headers de page : flex → wrap */
+  .flex.items-center.justify-between {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* KPIs 5 colonnes → 2 colonnes */
+  .grid.grid-cols-5 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* KPIs 4 colonnes → 2 colonnes */
+  .grid.grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Grilles 3 colonnes → 1 colonne */
+  .grid.grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* col-span-2 dans grid 3 → pleine largeur */
+  .col-span-2 {
+    grid-column: span 1 !important;
+  }
+
+  /* Tableaux : scroll horizontal */
+  table { display: block; overflow-x: auto; white-space: nowrap; }
+
+  /* Texte très grand → réduit */
+  .text-4xl { font-size: 1.75rem !important; }
+  .text-3xl { font-size: 1.5rem !important; }
+  .text-2xl { font-size: 1.25rem !important; }
+
+  /* Cacher les éléments uniquement desktop */
+  .desktop-only { display: none !important; }
+}
+
+/* Breakpoint tablette */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .grid.grid-cols-5 {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  .grid.grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── Hamburger button (visible seulement mobile) ──────────────────────────── */
+.hamburger-btn {
+  display: none;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 300;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(15,23,42,0.92);
+  backdrop-filter: blur(12px);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0;
+}
+.hamburger-btn span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: white;
+  border-radius: 2px;
+  transition: all 0.25s;
+}
+
+@media (max-width: 768px) {
+  .hamburger-btn { display: flex; }
+}
+
+/* ── Sidebar responsive ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* La sidebar devient un drawer */
+  .signum-sidebar {
+    position: fixed !important;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 250;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+  }
+  .signum-sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Overlay sombre derrière la sidebar */
+  .sidebar-overlay {
+    display: block !important;
+  }
+
+  /* Le main n'est plus décalé */
+  .signum-main {
+    margin-left: 0 !important;
+  }
+
+  /* Padding top pour laisser place au hamburger */
+  .signum-main > div {
+    padding-top: 60px !important;
+  }
+}
+
+/* Overlay (caché sur desktop) */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
+  z-index: 200;
+}

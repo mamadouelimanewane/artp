@@ -81,13 +81,21 @@ const MODULES = [
     bg: "bg-amber-50", border: "border-amber-200", stars: 4, status: "active",
     kpi: { label: "APIs disponibles", value: "3" },
   },
+  {
+    id: "signum", code: "SIGNUM", title: "SIGNUM", emoji: "🛰️",
+    subtitle: "Surveillance Réseaux · by Processingenierie",
+    description: "13 modules : trafic, IMEI, Mobile Money AML, fiscalité, IA prédictive, souveraineté. Concurrent de Global Voice Group.",
+    port: 5191, color: "from-indigo-600 to-cyan-600", accent: "#6366f1",
+    bg: "bg-indigo-50", border: "border-indigo-300", stars: 5, status: "active",
+    kpi: { label: "Modules souverains", value: "13 / 13" },
+  },
 ];
 
 const GLOBAL_KPIS = [
-  { label: "Opérateurs régulés", value: "12", icon: "🏢", color: "from-blue-500 to-blue-600" },
-  { label: "Plaintes traitées", value: "3 841", icon: "📋", color: "from-emerald-500 to-emerald-600" },
-  { label: "Mesures QoS", value: "48 392", icon: "📡", color: "from-purple-500 to-purple-600" },
-  { label: "Score conformité", value: "87%", icon: "✅", color: "from-amber-500 to-amber-600" },
+  { label: "Opérateurs régulés", value: "12",    icon: "🏢", color: "from-blue-500 to-blue-600" },
+  { label: "Plaintes traitées",  value: "3 841",  icon: "📋", color: "from-emerald-500 to-emerald-600" },
+  { label: "Mesures QoS",        value: "48 392", icon: "📡", color: "from-purple-500 to-purple-600" },
+  { label: "Score conformité",   value: "87%",    icon: "✅", color: "from-amber-500 to-amber-600" },
 ];
 
 function StarRating({ n }: { n: number }) {
@@ -116,6 +124,7 @@ export default function App() {
     alert:    "https://web-alert-blond.vercel.app",
     ailake:   "https://web-ailake.vercel.app",
     gateway:  "https://web-gateway-psi.vercel.app",
+    signum:   "https://web-signum.vercel.app",
   };
 
   function openModule(port: number, id: string) {
@@ -137,73 +146,72 @@ export default function App() {
           style={{ background: "radial-gradient(circle, #10b981, transparent)" }} />
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 border-b border-white/10" style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(20px)" }}>
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-black text-white shadow-lg"
+      {/* ── Header ─────────────────────────────────────────────────────────── */}
+      <header className="relative z-10 border-b border-white/10"
+        style={{ background: "rgba(255,255,255,0.05)", backdropFilter: "blur(20px)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-white shadow-lg flex-shrink-0"
               style={{ background: "linear-gradient(135deg, #6366f1, #0ea5e9)" }}>
               A
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white tracking-tight">Grand SI ARTP</h1>
-              <p className="text-xs text-blue-300">Hub Central · 10 modules · Sénégal 2026–2030</p>
+              <h1 className="text-base sm:text-xl font-bold text-white tracking-tight">Grand SI ARTP</h1>
+              <p className="text-[10px] sm:text-xs text-blue-300">Hub Central · 11 modules · Sénégal 2026–2030</p>
             </div>
           </div>
-          <div className="flex items-center gap-6">
-            <div className="hidden md:flex items-center gap-2 text-xs text-emerald-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block"></span>
-              Système opérationnel
+          <div className="flex items-center gap-3 sm:gap-6">
+            <div className="flex items-center gap-2 text-xs text-emerald-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block" />
+              <span className="hidden sm:inline">Système opérationnel</span>
             </div>
-            <div className="text-xs text-white/50 border border-white/20 px-3 py-1.5 rounded-full">
-              {new Date().toLocaleDateString("fr-SN", { day: "numeric", month: "long", year: "numeric" })}
+            <div className="text-xs text-white/50 border border-white/20 px-2 sm:px-3 py-1.5 rounded-full whitespace-nowrap">
+              {new Date().toLocaleDateString("fr-SN", { day: "numeric", month: "short", year: "numeric" })}
             </div>
           </div>
         </div>
       </header>
 
-      <main className="relative z-10 max-w-7xl mx-auto px-6 py-10">
+      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
 
-        {/* Hero section */}
-        <div className="text-center mb-12">
+        {/* ── Hero ───────────────────────────────────────────────────────────── */}
+        <div className="text-center mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold mb-4 text-blue-300 border border-blue-500/30"
             style={{ background: "rgba(59,130,246,0.1)" }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse inline-block"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse inline-block" />
             Offre Spontanée · Proposition 2026–2030
           </div>
-          <h2 className="text-4xl font-black text-white mb-3 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-black text-white mb-3 tracking-tight leading-tight">
             Système d'Information<br />
             <span style={{ background: "linear-gradient(90deg, #6366f1, #0ea5e9, #10b981)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
               de Régulation ARTP
             </span>
           </h2>
-          <p className="text-white/50 max-w-xl mx-auto text-sm leading-relaxed">
+          <p className="text-white/50 max-w-xl mx-auto text-sm leading-relaxed px-2">
             Écosystème digital complet pour la régulation des télécommunications au Sénégal.
-            10 modules interconnectés, accessibles depuis ce portail central.
+            11 modules interconnectés, accessibles depuis ce portail central.
           </p>
         </div>
 
-        {/* Titre section */}
-        <div className="flex items-center justify-between mb-6">
+        {/* ── Titre section ──────────────────────────────────────────────────── */}
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
           <div>
-            <h3 className="text-xl font-bold text-white">Applications du Grand SI</h3>
-            <p className="text-white/40 text-sm mt-0.5">Cliquez sur une application pour l'ouvrir</p>
+            <h3 className="text-lg sm:text-xl font-bold text-white">Applications du Grand SI</h3>
+            <p className="text-white/40 text-xs sm:text-sm mt-0.5">Cliquez sur une application pour l'ouvrir</p>
           </div>
           <span className="text-xs text-white/40 border border-white/20 px-3 py-1.5 rounded-full">
             {MODULES.filter(m => m.status === "active").length} / {MODULES.length} actives
           </span>
         </div>
 
-        {/* Grille modules */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {/* ── Grille modules ─────────────────────────────────────────────────── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
           {MODULES.map((m) => (
             <div
               key={m.id}
               className="group rounded-2xl border cursor-pointer transition-all duration-300 overflow-hidden"
               style={{
-                background: hovered === m.id
-                  ? "rgba(255,255,255,0.12)"
-                  : "rgba(255,255,255,0.06)",
+                background: hovered === m.id ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.06)",
                 borderColor: hovered === m.id ? m.accent + "80" : "rgba(255,255,255,0.10)",
                 backdropFilter: "blur(10px)",
                 transform: hovered === m.id ? "translateY(-4px)" : "translateY(0)",
@@ -216,10 +224,10 @@ export default function App() {
               {/* Barre gradient top */}
               <div className={`h-1 bg-gradient-to-r ${m.color}`} />
 
-              <div className="p-5">
+              <div className="p-4 sm:p-5">
                 {/* Header card */}
                 <div className="flex items-start justify-between mb-4">
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${m.color} flex items-center justify-center text-2xl shadow-md`}>
+                  <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br ${m.color} flex items-center justify-center text-xl sm:text-2xl shadow-md flex-shrink-0`}>
                     {m.emoji}
                   </div>
                   <div className="flex flex-col items-end gap-2">
@@ -231,52 +239,58 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Titre */}
-                <h3 className="font-black text-white text-lg leading-tight">{m.subtitle}</h3>
+                <h3 className="font-black text-white text-base sm:text-lg leading-tight">{m.subtitle}</h3>
                 <p className="text-sm font-medium mt-1 mb-3" style={{ color: m.accent + "dd" }}>{m.title}</p>
-                <p className="text-sm text-white/55 leading-relaxed mb-4">{m.description}</p>
+                <p className="text-xs sm:text-sm text-white/55 leading-relaxed mb-4">{m.description}</p>
 
                 {/* KPI */}
-                <div className="rounded-xl px-4 py-3 mb-4 flex items-center justify-between"
+                <div className="rounded-xl px-3 sm:px-4 py-3 mb-4 flex items-center justify-between gap-2"
                   style={{ background: m.accent + "20", border: `1px solid ${m.accent}40` }}>
-                  <span className="text-sm text-white/65">{m.kpi.label}</span>
-                  <span className="font-black text-base text-white">{m.kpi.value}</span>
+                  <span className="text-xs sm:text-sm text-white/65 leading-tight">{m.kpi.label}</span>
+                  <span className="font-black text-sm sm:text-base text-white flex-shrink-0">{m.kpi.value}</span>
                 </div>
 
                 {/* Bouton */}
                 <button
-                  className={`w-full py-3 rounded-xl text-sm font-bold transition-all duration-200 bg-gradient-to-r ${m.color} text-white`}
+                  className={`w-full py-2.5 sm:py-3 rounded-xl text-sm font-bold transition-all duration-200 bg-gradient-to-r ${m.color} text-white`}
                   style={{ opacity: hovered === m.id ? 1 : 0.85 }}
                   onClick={e => { e.stopPropagation(); openModule(m.port, m.id); }}
                 >
-                  Ouvrir l'application →
+                  Ouvrir →
                 </button>
               </div>
             </div>
           ))}
         </div>
 
-        {/* KPIs globaux */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+        {/* ── KPIs globaux ───────────────────────────────────────────────────── */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-8 sm:mt-12">
           {GLOBAL_KPIS.map(k => (
-            <div key={k.label} className="rounded-2xl p-5 border border-white/10 text-center"
+            <div key={k.label} className="rounded-2xl p-4 sm:p-5 border border-white/10 text-center"
               style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(10px)" }}>
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${k.color} flex items-center justify-center text-lg mx-auto mb-3`}>
+              <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${k.color} flex items-center justify-center text-base sm:text-lg mx-auto mb-2 sm:mb-3`}>
                 {k.icon}
               </div>
-              <p className="text-2xl font-black text-white">{k.value}</p>
-              <p className="text-xs text-white/50 mt-1">{k.label}</p>
+              <p className="text-xl sm:text-2xl font-black text-white">{k.value}</p>
+              <p className="text-[10px] sm:text-xs text-white/50 mt-1">{k.label}</p>
             </div>
           ))}
         </div>
 
-        {/* Footer */}
-        <div className="mt-14 pt-6 border-t border-white/10 flex items-center justify-between text-xs text-white/30">
+        {/* ── Footer ─────────────────────────────────────────────────────────── */}
+        <div className="mt-10 sm:mt-14 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs text-white/30">
           <span>ARTP Sénégal · Grand SI 2026–2030</span>
-          <span>Offre Spontanée · Code des Marchés Publics</span>
-          <span>10 applications · 18 services</span>
+          <span className="hidden sm:inline">Offre Spontanée · Code des Marchés Publics</span>
+          <span>11 applications · 18 services</span>
         </div>
       </main>
+
+      {/* ── CSS responsive Hub ─────────────────────────────────────────────── */}
+      <style>{`
+        @media (max-width: 640px) {
+          .group:hover { transform: none !important; }
+        }
+      `}</style>
     </div>
   );
 }
